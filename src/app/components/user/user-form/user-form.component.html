@@ -1,0 +1,138 @@
+<form [formGroup]="userForm" #ngForm="ngForm" class="form-container">
+  <mat-card class="main-card">
+    <mat-card-title class="text-center"> Formulario de Usuario </mat-card-title>
+
+    <mat-card-content>
+      <div class="row">
+        <mat-form-field class="full-width">
+          <input formControlName="id" matInput placeholder="Cédula" />
+          <mat-hint *ngIf="ngForm.submitted && id?.errors" class="text-danger">
+            <span [ngSwitch]="id?.value">
+              <span *ngSwitchCase="''">La cédula es requerida.</span>
+              <span *ngSwitchDefault
+                >La cédula no tiene el formato correcto.</span
+              >
+            </span>
+          </mat-hint>
+        </mat-form-field>
+      </div>
+
+      <div class="row">
+        <mat-form-field class="full-width">
+          <input formControlName="name" matInput placeholder="Primer Nombre" />
+          <mat-hint
+            *ngIf="ngForm.submitted && name?.errors"
+            class="text-danger"
+          >
+            El primer nombre es requerido.
+          </mat-hint>
+        </mat-form-field>
+      </div>
+
+      <div class="row">
+        <mat-form-field class="full-width">
+          <input
+            formControlName="lastName"
+            matInput
+            placeholder="Primer Apellido"
+          />
+          <mat-hint
+            *ngIf="ngForm.submitted && lastName?.errors"
+            class="text-danger"
+          >
+            El primer apellido es requerido.
+          </mat-hint>
+        </mat-form-field>
+      </div>
+
+      <div class="row" formArrayName="emails">
+        <div class="d-flex justify-content-between align-items-center">
+          <h2 class="d-block">Correos</h2>
+          <button (click)="addEmail()" type="button" mat-raised-button>
+            Agregar Correo
+          </button>
+        </div>
+        <mat-hint
+          *ngIf="ngForm.submitted && emails?.errors"
+          class="text-danger mx-3"
+        >
+          Debe agregar al menos un correo.
+        </mat-hint>
+        <div class="row" *ngFor="let email of emails.controls; let i = index">
+          <div class="d-flex align-items-center">
+            <mat-form-field class="full-width">
+              <input
+                [formControlName]="i"
+                matInput
+                [placeholder]="'Correo ' + (i + 1)"
+              />
+              <mat-hint
+                *ngIf="ngForm.submitted && email?.errors"
+                class="text-danger"
+              >
+                <span [ngSwitch]="email?.value">
+                  <span *ngSwitchCase="''">El correo es requerido.</span>
+                  <span *ngSwitchDefault
+                    >La correo no tiene el formato correcto.</span
+                  >
+                </span>
+              </mat-hint>
+            </mat-form-field>
+            <button (click)="removeEmail(i)" type="button">X</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="row" formArrayName="phones">
+        <div class="d-flex justify-content-between align-items-center">
+          <h2 class="d-block">Teléfonos</h2>
+          <button (click)="addPhone()" type="button" mat-raised-button>
+            Agregar Teléfono
+          </button>
+        </div>
+        <mat-hint
+          *ngIf="ngForm.submitted && phones?.errors"
+          class="text-danger mx-3"
+        >
+          Debe agregar al menos un teléfono.
+        </mat-hint>
+        <div class="row" *ngFor="let phone of phones.controls; let i = index">
+          <div class="d-flex align-items-center">
+            <mat-form-field class="full-width">
+              <input
+                [formControlName]="i"
+                matInput
+                [placeholder]="'Teléfono ' + (i + 1)"
+              />
+              <mat-hint
+                *ngIf="ngForm.submitted && phone?.errors"
+                class="text-danger"
+              >
+                <span [ngSwitch]="phone?.value">
+                  <span *ngSwitchCase="''">El teléfono es requerido.</span>
+                  <span *ngSwitchDefault
+                    >La teléfono no tiene el formato correcto.</span
+                  >
+                </span>
+              </mat-hint>
+            </mat-form-field>
+            <button (click)="removePhone(i)" type="button">X</button>
+          </div>
+        </div>
+      </div>
+    </mat-card-content>
+
+    <mat-card-actions>
+      <button (click)="saveForm()" mat-raised-button color="primary">
+        Save
+      </button>
+      <small class="text-center text-danger mx-3">
+        <span
+          *ngIf="ngForm.submitted && !userForm.valid"
+          [ngClass]="{ invalid: ngForm.submitted }"
+          >* Campos Requeridos</span
+        >
+      </small>
+    </mat-card-actions>
+  </mat-card>
+</form>
